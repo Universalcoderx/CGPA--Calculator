@@ -196,6 +196,24 @@
             color: #000;
         }
 
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .header-wrapper .table-header {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
         .result-section {
             margin-top: 30px;
             padding: 20px;
@@ -262,27 +280,179 @@
             background: #777;
         }
 
-        @media (max-width: 600px) {
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .toggle-buttons {
+                width: 100%;
+            }
+
             .container {
-                padding: 20px;
+                padding: 20px 15px;
+                border-radius: 10px;
             }
 
             .university-name {
-                font-size: 24px;
+                font-size: 20px;
+                margin-bottom: 5px;
             }
 
             .calculator-title {
-                font-size: 26px;
+                font-size: 24px;
             }
 
-            .table-header,
+            .table-header {
+                display: none;
+            }
+
             .course-row {
+                grid-template-columns: 40px 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .course-number {
+                font-size: 16px;
+            }
+
+            .input-field {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .button-group {
+                flex-direction: column;
                 gap: 10px;
             }
 
-            .btn,
-            .submit-btn {
+            .btn {
+                padding: 12px;
                 font-size: 14px;
+            }
+
+            .submit-btn {
+                padding: 14px;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .toggle-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+                flex: 1;
+            }
+
+            .result-value {
+                font-size: 28px;
+            }
+
+            .result-label {
+                font-size: 14px;
+            }
+
+            .result-status {
+                font-size: 12px;
+            }
+
+            .footer {
+                font-size: 11px;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px 12px;
+            }
+
+            .university-name {
+                font-size: 18px;
+            }
+
+            .calculator-title {
+                font-size: 20px;
+                letter-spacing: 0.5px;
+            }
+
+            .course-row {
+                grid-template-columns: 35px 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 18px;
+            }
+
+            .course-number {
+                font-size: 14px;
+            }
+
+            .input-field {
+                padding: 9px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+
+            .submit-btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .toggle-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .result-value {
+                font-size: 24px;
+            }
+
+            .courses-container {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 12px 10px;
+            }
+
+            .university-name {
+                font-size: 16px;
+            }
+
+            .calculator-title {
+                font-size: 18px;
+            }
+
+            .course-row {
+                grid-template-columns: 30px 1fr 1fr;
+                gap: 5px;
+            }
+
+            .input-field {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .toggle-btn {
+                padding: 7px 10px;
+                font-size: 11px;
+            }
+
+            .btn {
+                padding: 9px;
+                font-size: 12px;
             }
         }
     </style>
@@ -294,13 +464,13 @@
             <div class="calculator-title">CGPA Calculator</div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div class="table-header" style="flex: 1; margin-bottom: 0;">
+        <div class="header-wrapper">
+            <div class="table-header">
                 <span>Course #</span>
                 <span>Credits</span>
                 <span id="headerLabel">Marks / Grade</span>
             </div>
-            <div style="display: flex; gap: 5px; margin-left: 15px;">
+            <div class="toggle-buttons">
                 <button class="toggle-btn active" onclick="switchMode('marks')">Marks</button>
                 <button class="toggle-btn" onclick="switchMode('grade')">Grade</button>
             </div>

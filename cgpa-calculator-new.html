@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBS Purvanchal University - CGPA Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            color: #fff;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .university-name {
+            font-size: 28px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .calculator-title {
+            font-size: 32px;
+            color: #888888;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .table-header span {
+            color: #888888;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .courses-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 30px;
+        }
+
+        .course-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .course-row.grade-mode {
+            grid-template-columns: 60px 1fr 1fr;
+        }
+
+        .course-number {
+            color: #aaa;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .input-field {
+            background-color: #1a1a1a;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #00bfff;
+        }
+
+        .input-field::placeholder {
+            color: #666;
+        }
+
+        .grade-display {
+            background-color: #1a1a1a;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 12px;
+            color: #aaa;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #555;
+            background-color: transparent;
+            color: #aaa;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: capitalize;
+        }
+
+        .btn:hover {
+            border-color: #777;
+            color: #fff;
+        }
+
+        .btn.add-course {
+            border-color: #555;
+            color: #aaa;
+        }
+
+        .btn.add-course:hover {
+            background-color: #333;
+            border-color: #666;
+            color: #fff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: capitalize;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .toggle-btn {
+            padding: 8px 15px;
+            border: 2px solid #555;
+            background-color: transparent;
+            color: #888;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            border-color: #00bfff;
+            color: #00bfff;
+        }
+
+        .toggle-btn.active {
+            background-color: #00bfff;
+            border-color: #00bfff;
+            color: #000;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-label {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-size: 36px;
+            color: #00bfff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .result-status {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Scrollbar styling */
+        .courses-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .courses-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 3px;
+        }
+
+        .courses-container::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+        }
+
+        .courses-container::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .university-name {
+                font-size: 24px;
+            }
+
+            .calculator-title {
+                font-size: 26px;
+            }
+
+            .table-header,
+            .course-row {
+                gap: 10px;
+            }
+
+            .btn,
+            .submit-btn {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="university-name">VBS Purvanchal University</div>
+            <div class="calculator-title">CGPA Calculator</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div class="table-header" style="flex: 1; margin-bottom: 0;">
+                <span>Course #</span>
+                <span>Credits</span>
+                <span id="headerLabel">Marks / Grade</span>
+            </div>
+            <div style="display: flex; gap: 5px; margin-left: 15px;">
+                <button class="toggle-btn active" onclick="switchMode('marks')">Marks</button>
+                <button class="toggle-btn" onclick="switchMode('grade')">Grade</button>
+            </div>
+        </div>
+
+        <div class="courses-container" id="coursesContainer">
+            <!-- Courses will be added here -->
+        </div>
+
+        <button class="btn add-course" onclick="addCourse()">+ Add course</button>
+
+        <button class="submit-btn" onclick="calculateGPA()">Submit</button>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-label">Your GPA is:</div>
+            <div class="result-value" id="gpaValue">0.00</div>
+            <div class="result-status" id="gpaStatus"></div>
+        </div>
+
+        <div class="footer">
+            <a href="#">Source Code</a> Universal coderx.
+        </div>
+    </div>
+
+    <script>
+        let courseCount = 0;
+        let inputMode = 'marks'; // 'marks' or 'grade'
+
+        // Initialize with one empty course
+        window.addEventListener('DOMContentLoaded', () => {
+            addCourse();
+        });
+
+        function switchMode(mode) {
+            inputMode = mode;
+            
+            // Update button styling
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update header
+            document.getElementById('headerLabel').textContent = mode === 'marks' ? 'Marks' : 'Grade';
+            
+            // Clear all courses and recreate them
+            const coursesContainer = document.getElementById('coursesContainer');
+            coursesContainer.innerHTML = '';
+            courseCount = 0;
+            addCourse();
+        }
+
+        function addCourse() {
+            courseCount++;
+            const coursesContainer = document.getElementById('coursesContainer');
+            
+            const courseRow = document.createElement('div');
+            courseRow.className = 'course-row';
+            if (inputMode === 'grade') {
+                courseRow.classList.add('grade-mode');
+            }
+            courseRow.id = `course-${courseCount}`;
+            
+            if (inputMode === 'marks') {
+                courseRow.innerHTML = `
+                    <div class="course-number">${courseCount}.</div>
+                    <input 
+                        type="number" 
+                        class="input-field credits" 
+                        placeholder="Credits" 
+                        min="0" 
+                        step="0.5"
+                        data-course-id="${courseCount}"
+                    >
+                    <input 
+                        type="number" 
+                        class="input-field marks" 
+                        placeholder="Marks (0-100)" 
+                        min="0" 
+                        max="100" 
+                        step="0.1"
+                        data-course-id="${courseCount}"
+                        onchange="convertMarksToGrade(this)"
+                        oninput="convertMarksToGrade(this)"
+                    >
+                `;
+            } else {
+                courseRow.innerHTML = `
+                    <div class="course-number">${courseCount}.</div>
+                    <input 
+                        type="number" 
+                        class="input-field credits" 
+                        placeholder="Credits" 
+                        min="0" 
+                        step="0.5"
+                        data-course-id="${courseCount}"
+                    >
+                    <input 
+                        type="number" 
+                        class="input-field grade-input" 
+                        placeholder="Grade (0-10)" 
+                        min="0" 
+                        max="10" 
+                        step="0.1"
+                        data-course-id="${courseCount}"
+                    >
+                `;
+            }
+            
+            coursesContainer.appendChild(courseRow);
+        }
+
+        function convertMarksToGrade(marksInput) {
+            const marks = parseFloat(marksInput.value);
+            
+            if (!isNaN(marks) && marks >= 0) {
+                // Display calculation for reference
+                console.log(`Marks: ${marks}`);
+            }
+        }
+
+        function calculateGPA() {
+            const coursesContainer = document.getElementById('coursesContainer');
+            const courses = coursesContainer.querySelectorAll('.course-row');
+            
+            let totalCredits = 0;
+            let totalPoints = 0;
+            let validCourses = 0;
+
+            courses.forEach(course => {
+                const creditsInput = course.querySelector('.credits');
+                const credits = parseFloat(creditsInput.value);
+                let grade = 0;
+                
+                if (inputMode === 'marks') {
+                    const marksInput = course.querySelector('.marks');
+                    const marks = parseFloat(marksInput.value);
+                    
+                    if (!isNaN(marks) && marks >= 0) {
+                        if (marks < 40) {
+                            grade = 0;
+                        } else {
+                            grade = Math.ceil((marks - 40) / 10) + 4;
+                        }
+                    }
+                } else {
+                    const gradeInput = course.querySelector('.grade-input');
+                    grade = parseFloat(gradeInput.value);
+                }
+                
+                if (!isNaN(credits) && credits > 0) {
+                    // Har course ke credits denominator me add honge
+                    totalCredits += credits;
+                    validCourses++;
+                    
+                    // Agar grade 0 nahi hai (fail nahi hai) to numerator me add honge
+                    if (grade > 0) {
+                        totalPoints += credits * grade;
+                    }
+                }
+            });
+
+            if (validCourses === 0) {
+                alert('Please enter at least one course with credits');
+                return;
+            }
+
+            const gpa = totalPoints / totalCredits;
+            
+            // Display result
+            const resultSection = document.getElementById('resultSection');
+            const gpaValue = document.getElementById('gpaValue');
+            const gpaStatus = document.getElementById('gpaStatus');
+            
+            gpaValue.textContent = gpa.toFixed(2);
+            
+            if (gpa >= 9) {
+                gpaStatus.textContent = 'Outstanding! 🎉';
+                gpaStatus.style.color = '#00ff00';
+            } else if (gpa >= 8) {
+                gpaStatus.textContent = 'Excellent! ⭐';
+                gpaStatus.style.color = '#00bfff';
+            } else if (gpa >= 7) {
+                gpaStatus.textContent = 'Good! 👍';
+                gpaStatus.style.color = '#ffaa00';
+            } else if (gpa >= 6) {
+                gpaStatus.textContent = 'Average';
+                gpaStatus.style.color = '#ff6600';
+            } else {
+                gpaStatus.textContent = 'Needs Improvement';
+                gpaStatus.style.color = '#ff3333';
+            }
+            
+            resultSection.classList.add('show');
+        }
+    </script>
+</body>
+</html>
